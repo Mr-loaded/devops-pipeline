@@ -1,8 +1,9 @@
-name: First DevOps Pipeline
+name: Docker Build and Test Pipeline
 
-# Trigger the workflow on every push to the main branch
 on:
   push:
+    branches: [ "main" ]
+  pull_request:
     branches: [ "main" ]
 
 jobs:
@@ -10,16 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout repository code
         uses: actions/checkout@v4
 
-      - name: Print Pipeline Info
-        run: |
-          echo "Pipeline triggered by: ${{ github.actor }}"
-          echo "Repository name: ${{ github.repository }}"
-          echo "Branch: ${{ github.ref }}"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Simulate Build & Test Step
+      - name: Build Docker Image
         run: |
-          echo "Running mock test suite..."
-          echo "Tests passed successfully!"
+          docker build -t my-app:test .
+
+      - name: Test Docker Container Execution
+        run: |
+          docker run -d -p 8080:8080 --name test-container my-app:test
+          sleep 3
+          curl --fail http://localhost:8080 || exit 1
+          echo "Container health check passed successfully!"
