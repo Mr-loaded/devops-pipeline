@@ -6,7 +6,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, DevOps Pipeline!")
+	fmt.Fprintf(w, "Hello, DevOps Pipeline! Continuous Deployment to AWS ECS is LIVE! 🚀")
 }
 
 func main() {
