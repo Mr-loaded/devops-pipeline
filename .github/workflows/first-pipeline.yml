@@ -1,0 +1,25 @@
+name: First DevOps Pipeline
+
+# Trigger the workflow on every push to the main branch
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Print Pipeline Info
+        run: |
+          echo "Pipeline triggered by: ${{ github.actor }}"
+          echo "Repository name: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref }}"
+
+      - name: Simulate Build & Test Step
+        run: |
+          echo "Running mock test suite..."
+          echo "Tests passed successfully!"
